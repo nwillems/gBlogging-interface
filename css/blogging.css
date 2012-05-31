@@ -1,0 +1,24 @@
+body {
+/* background-image: url('../bg.png');*/
+}
+
+.post-stats { 
+    border-top: 1px solid #DDD; 
+    color: #CCC; 
+    margin-top: 10px;
+    padding-top: 3px;
+}
+
+.hidden { display: none; }
+
+.post-stats .icon { margin-right: 5px; }
+.green { background-color: #088C56; }
+.orange { background-color: #E25E18; }
+.blue { background-color: #088CD2; }
+div.icon {min-width:16px; height:16px; float: left; background-repeat: no-repeat; margin-bottom: 5px; cursor: pointer; padding-left: 21px;}
+.icon.post-read { background-image: url('page_go.png'); }
+.icon.post-update { background-image: url('page_edit.png'); }
+.icon.post-delete { background-image: url('page_delete.png'); }
+.icon.comments { background-image: url('comments.png'); }
+.icon.tags { background-image: url('tag_blue.png'); }
+.post-title-input{font-weight: bold; color: #333; font-size: 24px; line-height: 36px; height:36px;}

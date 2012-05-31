@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head> 
+  <title>Blog editing done right</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" type="text/css" href="css/smoothness/jquery-ui-1.8.17.custom.css" />
+
+<style type="text/css">
+body { padding-top: 60px; padding-bottom: 40px; }
+</style>
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="css/blogging.css" />
+</head>
+
+<body>
+<!-- Navigation -->
+<div class="navbar navbar-fixed-top"><div class="navbar-inner"><div class="container-fluid">
+    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+    </a>
+    <a class="brand" href="#">Blogging</a>
+    <div class="nav-collapse">
+        <ul class="nav" id="menu">
+            <li class="active"><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#more">More</a></li>
+        </ul>
+        <p class="navbar-text pull-right">
+            <a href="#login" id="login">Log in</a>
+        </p>
+        <ul class="nav pull-right">
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    Your blogs <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu" id="blogs">
+                    <li><a href="#login">Not logged in</a></li>
+                    <li data-blog-id="1"><a href="#blog1">Blog#1</a></li>
+                    <li data-blog-id="2"><a href="#blog2">Blog#2</a></li>
+                    <li data-blog-id="3"><a href="#blog3">Blog#3</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div></div></div>
+
+<!-- Fluid layout body -->
+<div class="container-fluid">
+<div class="row-fluid">
+    <div class="span4">&nbsp;</div>
+    <div class="span4" id="error">No errors, yet</div>
+</div>
+<div id="container" class="row-fluid">
+<div id="welcome-page">
+    <div class="row-fluid">
+        <div class="span9">
+            <div class="hero-unit">
+                <h1>Content header</h1>
+                This is awesome content, why? because youre going to make it. 
+                So you wanna blog, huh? Have you read why this site exists? 
+                Probably not, so let me point you in the right direction -&gt;
+                I need to put some content here
+            </div>
+        </div>
+        <div class="span3">
+            Long story short - I decided that the google blog post editor wasnt
+            very nice. So I created this little app. Now I have something that 
+            works, and some more experience with the following: GData, Bootstrap
+            , jQuery, CSS, and HTML.
+        </div>
+    </div>
+    <div class="row-fluid" id="landingpage_container">
+        <div class="span4">
+            On my rights is a box saying something about why theese boxes are 
+            here. You can probably do something nice with this app, so why not 
+            jump right over to the last box and read/watch something about this
+            application.
+        </div>
+        <div class="span4">
+            These three boxes are here to make som filling - this is the landing
+            page. Where these boxes are, a list of blogs can be shown, if you 
+            will please login. If you are worried about your google login, 
+            please read along in the next box.
+        </div>
+        <div class="span4">
+            So you hit the last box - this one. Here should be some links to 
+            how to use the application, why its here and why you don't need to 
+            worry about your google account.
+            <ul>
+                <li>Link to userguide</li>
+                <li>Link to original blog post</li>
+                <li>Is it secure?</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div id="post-list" style="display: none;">
+<div class="row-fluid"><div class="span12">
+    <p>
+        <button id="createPost" class="btn btn-success">Create post</button>
+        &nbsp;
+        <button id="viewBlog" class="btn btn-primary">View blog</button>
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="postsbody">
+            <tr>
+                <td>PostTitle#1</td>
+                <td>25-04-2011</td>
+                <td>
+                    <button class="btn">R</button>&nbsp;
+                    <button class="btn">U</button>&nbsp;
+                    <button class="btn">D</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div></div>
+</div>
+<div id="post-edit" style="display: none;">
+<div class="row-fluid post-editor">
+    <form>
+        <div class="row-fluid">
+            <div class="span12">
+            <input name="postTitle" 
+                id="postTitle"
+                placeholder="Untitled post"
+                type="text" 
+                class="post-title-input span12" />
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div id="postEditor" class="span12">
+                <!-- BEGIN:EDITOR -->
+                <textarea name="postBody" id="postBody">
+                </textarea>
+                <!-- END:EDITOR -->
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span1">&nbsp;</div>
+            <div class="span11">
+                <input type="text" id="postTags" />
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div id="submit" class="span-4 last">
+                <button type="submit" id="postSave" class="btn">
+                    Save
+                </button>
+                &nbsp;
+                <button type="submit" id="postPublish" class="btn btn-primary">
+                    Publish
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+</div>
+</div>
+<hr />
+<footer>
+    <p>Nicolai Willems developed this in 2012 - you are free to
+    copy/steal/borrow/blog-about this piece of software</p>
+</footer>
+</div>
+<!-- JS -->
+<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.8.17.custom.min.js"></script>
+<script type="text/javascript" src="js/soyutils.js"></script>
+<script type="text/javascript" src="wymeditor/jquery.wymeditor.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript"
+src="http://www.google.com/jsapi?key=ABQIAAAAbK474rR3kJFfcoXcI11RZRRwboP0sVKXfCMimLEwL1FTc83jehRdo_KFosFUuG4ibAs-R6OLl29Llw"></script>
+<script type="text/javascript">
+  google.load("gdata", "2.x", {packages : ['blogger']});
+</script>
+<script type="text/javascript" src="templates/templates.min.js"></script>
+<script type="text/javascript" src="js/blogging.js"></script>
+<img src="img/1x1.jpg" />
+</body>
+</html>

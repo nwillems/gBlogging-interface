@@ -1,0 +1,77 @@
+{namespace blogging.templates}
+/**
+ * Used to print a single blog entry in .blog_list
+ *
+ * @param blogID id of the blog element
+ * @param blogName The blogs title
+ */
+{template .blog}
+    <li id="{$blogID}"><a href="#{$blogID}">{$blogName}</a></li>
+{/template}
+
+
+/**
+ * Simple view of a blog post - used when selecting which to edit-view-delete
+ *
+ * @param ID ID of the post
+ * @param Title posts title
+ * @param Date date of post publish
+ */
+{template .post_row}
+<tr id="POST{$ID}">
+    <td><h2>{$Title}</h2></td>
+    <td>{$Date}</td>
+    <td>
+        <button id="Edit{$ID}" data-post-id="{$ID}" class="btn btn-success">Update</button>&nbsp;
+        <button id="Read{$ID}" data-post-id="{$ID}" class="btn">Read</button>&nbsp;
+        <button id="Delete{$ID}" data-post-id="{$ID}" class="btn btn-danger">Delete</button>
+    </td>
+</tr>
+{/template}
+
+/**
+ * Editor view of a post
+ * @param postID
+ * @param postTitle
+ * @param postContent
+ * @param postTags
+ */
+{template .post_editor}
+<div id="{$postID}" class="row-fluid post-editor">
+<form>
+<div class="row-fluid">
+    <div id="postTitle" class="span12">
+        <input name="postTitle" 
+                id="postTitle"
+                placeholder="Untitled post"
+                type="text" 
+                class="post-title-input span12"
+                value="{$postTitle}"/>
+    </div>
+</div><div class="row-fluid">
+    <div id="postEditor" class="span12">
+        <!-- BEGIN:EDITOR -->
+        <textarea name="postBody" id="postBody">
+            {$postContent |noAutoescape}
+        </textarea>
+        <!-- END:EDITOR -->
+    </div>
+</div><div class="row-fluid">
+    <div class="span1">&nbsp;</div>
+    <div id="postTags" class="span11">
+        <input type="text" value="{$postTags}" />
+    </div>
+</div><div class="row-fluid">
+    <div id="submit" class="span-4 last">
+        <button type="submit" id="postSave" class="btn">
+            Save
+        </button>
+        &nbsp;
+        <button type="submit" id="postPublish" class="btn btn-primary">
+            Publish
+        </button>
+    </div>
+</div>
+</form>
+</div>
+{/template}

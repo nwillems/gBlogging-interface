@@ -8,23 +8,23 @@ This application(if I may) is designed to do two things:
 
 ## Examples of bad HTML ##
 Google would make a blog post start like this:
-    <div dir="ltr" style="text-align: left;"> </div>
+`    <div dir="ltr" style="text-align: left;"> </div>`
 
 That is sort of fine - but when making a double line break, it results in the
 following:
-    <div dir="ltr" style="text-align: left;">
+`    <div dir="ltr" style="text-align: left;">
     Content
     <br />
     <br />
     some more
-    </div>
+    </div>`
 
 Instead, far as my html knowledge goes, this should be something looking like
 this:
-    <div dir="ltr" style="text-align: left;">
+`    <div dir="ltr" style="text-align: left;">
     <p>Content</p>
     <p>some more</p>
-    </div>
+    </div>`
 
 ## License ##
 Steal/borrow/blog-about/use-it is free of charge, even for commercial use.

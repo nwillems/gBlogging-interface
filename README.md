@@ -6,7 +6,7 @@ This application(if I may) is designed to do two things:
 * Get some more experience in writing completely client side applications
 * Make a blog editor that doesn't make bad html.
 
-== Examples of bad HTML ==
+## Examples of bad HTML ##
 Google would make a blog post start like this:
     <div dir="ltr" style="text-align: left;"> </div>
 
@@ -26,7 +26,7 @@ this:
     <p>some more</p>
     </div>
 
-== License ==
+## License ##
 Steal/borrow/blog-about/use-it is free of charge, even for commercial use.
 As always there is a but, in this case a small one:
 

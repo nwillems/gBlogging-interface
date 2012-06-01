@@ -1,6 +1,6 @@
 Welcome to an alternate blogging editor interface for google blogger.
 For a quick and dirty rundown - you can visit 
-<a href="http://nwillems.dk/blogging" target="_blank">http://nwillems.dk/blogging</a> to
+<a href="http://nwillems.dk/blogging" target="_blank">nwillems.dk/blogging</a> to
 see it in action.
 
 This application(if I may) is designed to do two things:

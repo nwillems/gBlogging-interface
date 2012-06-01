@@ -131,7 +131,8 @@ function showBlog(blogID){
     $("#post-list").show();
 }
 
-function loadPosts(blogNum){
+function loadPosts(blogNum, cb){
+    cb = cb ? cb : function(){};
     var blog = Blogging.blogs[blogNum];
     if(!blog){ return; }
 
@@ -140,6 +141,7 @@ function loadPosts(blogNum){
         function (result){
             Blogging.blogFeeds[blogNum] = result.feed;
             if(blogNum == 0){ showBlog(blogNum); }
+            cb();
         }, 
         handleError);
 }
@@ -159,14 +161,18 @@ function showPost(postID){
     //Tags [] - make magic
     var tmpTags = post.getCategories();
     var tags = "";
-    for(tag in tmpTags)
-        tags = ","+tag.getTerm();
+    for(var i = 0; i < tmpTags.length; i++)
+        tags = ","+tmpTags[i].getTerm();
     tags = tags.substring(1, tags.length);
     $("#postTags").val(tags);
 
     //Content
     $("#postBody").empty();
     Blogging.editorReference.html(post.getContent().getText());
+
+    if(post.getHtmlLink()){
+        $("#postSave").hide();
+    }else{ $("#postSave").show(); }
     $("#post-edit").show();
 }
 
@@ -177,8 +183,7 @@ function readPost(postId){
     postId = postId.substring("POST".length, postId.length);
     postId = postId.substring(0, postId.length-("read".length));
     var post = Blogging.blogFeeds[Blogging.currentShownBlog].blogFeed.getEntries()[postId];
-    if(post.getHtmlLink() == undefined 
-    || post.getHtmlLink() == 'undefined'){
+    if(!post.getHtmlLink()){
         handleError("Oops this post is not published - so no viewing pleasure for you my friend");
         return;
     }
@@ -190,15 +195,99 @@ function readPost(postId){
 /**
  * Save the current post to the google service
  */
-function savePost(){
+function savePost(asDraft){
+    var title = $("#postTitle").val();
+    var content = Blogging.editorReference.html();
+    var categories = $("#postTags").val().split(',');
+    var blog = Blogging.blogFeeds[Blogging.currentBlog];
+    var originalPost = blog.getEntries()[Blogging.currentPost];
 
+    var postEntry = new google.gdata.blogger.PostEntry();
+    postEntry.setTitle(google.gdata.atom.Text.create(title));
+    postEntry.setContent(google.gdata.atom.Text.create(content, "html"));
+
+    //Add categories/tags to post
+    for(var c = 0; c < categories.length; c++){
+        if(categories[c] != undefined && categories[c] != ''){
+            var category = new google.gdata.atom.Category();
+            category.setTerm(categories[c]);
+            category.setScheme("http://www.blogger.com/atom/ns#");
+            postEntry.addCategory(category);
+        }
+    }
+
+    if(asDraft){
+        var draft = new google.gdata.app.Draft();
+        draft.setValue(google.gdata.app.Draft.VALUE_YES);
+        var control = new google.gdata.app.Control();
+        control.setDraft(draft);
+        postEntry.setControl(control);
+    }
+    
+    var editUri = originalPost.getEditLink().getHref();
+    if(editUri != ''){ //Existing
+        Blogging.service.updateEntry(editUri, postEntry,
+            handlePostSaved, handleError); 
+    }else{
+        handleError("Derpe john - what are you doing?");
+    }
 }
 
-/**
- * Publish the current post to the google service
- */
-function publishPost(){
+function handlePostSaved(entryRoot){
+    handleError("GreatSuccess");
 
+    var postEntry = entryRoot.entry;
+    if(postEntry.getHtmlLink()){ //Not draft
+        //Hide save button - only show publish button
+        $("#postSave").hide();
+    }
+
+    loadPosts(Blogging.currentBlog);
+}
+
+function createPost(){
+    var postEntry = new google.gdata.blogger.PostEntry();
+    postEntry.setTitle(google.gdata.atom.Text.create("untitled post"));
+    postEntry.setContent(
+        google.gdata.atom.Text.create("<p>Content</p>", 'html'));
+
+    //Save as draft in the beginning
+    var draft = new google.gdata.app.Draft();
+    draft.setValue(google.gdata.app.Draft.VALUE_YES);
+    var control = new google.gdata.app.Control();
+    control.setDraft(draft);
+    postEntry.setControl(control);
+    
+    var curBlog = Blogging.blogs[Blogging.currentBlog];
+    var postHref = curBlog.getEntryPostLink().getHref();
+    Blogging.service.insertEntry(postHref, postEntry,
+        function(rootEntry){ //Handle loaded
+            var entry = rootEntry.entry; 
+            //Reload blog
+            loadPosts(Blogging.currentBlog, function(){
+                var blogFeed = Blogging.blogFeeds[Blogging.currentBlog].getEntries();
+                for(var i = 0; i < blogFeed.length; i++){
+                    if(blogFeed[i].getEditLink().getHref() == entry.getEditLink().getHref()){
+                        Blogging.currentPost = i;
+                        break;
+                    }
+                }
+                showPost(Blogging.currentPost);
+            })
+            //Show newly created post
+        }, handleError);
+}
+
+function deletePost(postID){
+    var currentBlog = Blogging.blogFeeds[Blogging.currentBlog];
+    var postEntry = currentBlog.getEntries()[postID];
+    var entryEditLink = postEntry.getEditLink().getHref();
+    Blogging.service.deleteEntry(entryEditlink, handleDeletePost, handleError);
+}
+
+function handleDeletePost(){
+    handleError("Succesfully deleted post");
+    loadPosts(Blogging.currentBlog);
 }
 
 /**
@@ -237,12 +326,18 @@ $(document).ready(function(){
     init();
     
     //Save func
-    $("#postSave").click(savePost);
+    $("#postSave").click(function(){savePost(true); return false;});
     //Publish func
-    $("#postPublish").click(publishPost);
+    $("#postPublish").click(function(){savePost(false); return false;});
 
-    //Dev feature
-    
+    //Create post
+    $("#createPost").click(function(){createPost(); return false;});
+
+    //View blog
+    $("#viewBlog").click(function(){
+        var url = Blogging.blogs[Blogging.currentBlog].getHtmlLink().getHref();
+        window.open(url, "_blank");
+    });
     
     $("#postsbody > tr > td:nth-child(3) > button:nth-child(1)").click(
         function(){

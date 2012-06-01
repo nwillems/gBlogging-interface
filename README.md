@@ -1,5 +1,6 @@
 Welcome to an alternate blogging editor interface for google blogger.
-For a quick and dirty rundown - you can visit http://nwillems.dk/blogging to
+For a quick and dirty rundown - you can visit 
+<a href="http://nwillems.dk/blogging">http://nwillems.dk/blogging</a> to
 see it in action.
 
 This application(if I may) is designed to do two things:

@@ -1,3 +1,6 @@
+### THIS PROJECT IS DEPRECATED AS OF GOOGLE BLOGGER API V3 ###
+
+
 Welcome to an alternate blogging editor interface for google blogger.
 For a quick and dirty rundown - you can visit 
 <a href="http://nwillems.dk/blogging" target="_blank">nwillems.dk/blogging</a> to
